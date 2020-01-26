@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Services;
 using StudentManagement_asp.netWebApi_.Models;
+using Microsoft.Extensions.Options;
 
 namespace StudentManagement_asp.netWebApi_
 {
@@ -26,8 +28,22 @@ namespace StudentManagement_asp.netWebApi_
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton<IStudentRepository, MockStudentRepository>();
+
+            //services.AddSingleton<IStudentService, StudentService>();
+            services.Configure<DataBaseSettings>(
+                Configuration.GetSection(nameof(DataBaseSettings)));
+
+            services.AddSingleton<IDataBaseSettings>(sp => sp.GetRequiredService<IOptions<DataBaseSettings>>().Value);
+
+           
+            services.AddSingleton(typeof(IStudentRepository<>), typeof(MockStudentRepository<>));
+            services.AddSingleton<IStudentService, StudentService>();
+
             services.AddControllers();
-            services.AddSingleton<IStudentRepository, MockStudentRepository>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
