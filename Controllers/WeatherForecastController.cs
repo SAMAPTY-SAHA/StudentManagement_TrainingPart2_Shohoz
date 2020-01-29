@@ -26,13 +26,14 @@ namespace StudentManagement_asp.netWebApi_.Controllers
             _studentService = studentService;
         }
         
-        public string  Index()
+        public IActionResult Index()
         {
             // return _studentRepository.GetStudent(1).name;
             //var model = _studentRepository.getAllStudent();
             var model = _studentService.getAllStudent();
-            string json = JsonConvert.SerializeObject(model);
-            return json;     
+            //string json = JsonConvert.SerializeObject(model);
+            //return json;   
+            return Ok(model);
 
         }
         [HttpGet("{id}")]
@@ -51,7 +52,8 @@ namespace StudentManagement_asp.netWebApi_.Controllers
             Student newSt = _studentService.GetStudent(id);
             // _studentRepository.delete(newSt);
             _studentService.delete(id);
-            return RedirectToAction("Index");
+            // return RedirectToAction("Index");
+            return Ok(newSt);
         }
 
        [HttpPost]

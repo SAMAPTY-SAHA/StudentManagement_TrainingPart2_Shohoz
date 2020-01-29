@@ -37,7 +37,7 @@ namespace StudentManagement_asp.netWebApi_
             services.AddSingleton<IDataBaseSettings>(sp => sp.GetRequiredService<IOptions<DataBaseSettings>>().Value);
 
            
-            services.AddSingleton(typeof(IStudentRepository<>), typeof(MockStudentRepository<>));
+            services.AddSingleton<IRepository, GenericRepository>();
             services.AddSingleton<IStudentService, StudentService>();
 
             services.AddControllers();
